@@ -1,0 +1,92 @@
+(defpoll time :interval "1s"
+  "date '+%H:%M:%S'"
+)
+
+(defpoll date :interval "60s"
+  "date '+%A, %d.%m.%Y'"
+)
+(defpoll weather :interval "15m"
+  "~/.config/eww/scripts/weather"
+)
+
+(defpoll weather_icon :interval "15m"
+
+  "scripts/weather.sh"
+)
+
+
+
+(defwidget weather-box []
+  (box
+    :orientation "horizontal"
+    :space-evenly true
+
+    (box
+      :orientation "vertical"
+      (button :onclick "sh -c 'scripts/open-firefox.sh'"
+        (label :text {weather} :class "weather" :wrap true)
+      )
+    )
+
+    ;;(image :path "icons/clear.png" :width "50px" :x 20) 
+    (image :path {weather_icon} :width 350 )
+
+  )
+)
+
+
+(defwindow weather_window
+  :monitor 0
+  :class "weather_window"
+  :geometry (
+    geometry
+    :anchor "top left"       ;; în loc de "top center"
+    :x "100px"                ;; ajustează cât vrei spre dreapta
+    :y "100px"                ;; ajustează cât vrei în jos
+    :width "30%"             ;; ajustează cât vrei
+    :height "20%"
+  
+  )
+  :stacking "fg"
+  :exclusive "false"
+  :focusable "false"
+  (weather-box)
+)
+
+
+(defwidget clock []
+  (box
+     :orientation "vertical"
+     :onclick "flatpak run com.ml4w.calendar" 
+    (label :text {time} :class "clock-time" )
+    (button  :onclick "sh -c '~/.config/eww/open-calendar.sh'"
+
+  (label :text {date} :class "clock-date")
+
+)
+
+    	
+  )
+)
+
+(defwindow ex
+:class "eww_clock"
+  :monitor 0
+  :geometry (
+    geometry
+   ;;:anchor "top center"
+    :x "1200px"
+    :y "100px"
+    :width "40%"
+    :height "30%"
+  )
+  :stacking "fg"
+  :exclusive "false"
+  :focusable "false"
+  (box
+    :orientation "vertical"
+    (clock)
+    
+  )
+
+)
